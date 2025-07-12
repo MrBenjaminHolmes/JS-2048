@@ -48,22 +48,74 @@ function randomPlacement(start) {
 }
 
 function compress(direction) {
-  const squareNodeList = document.querySelectorAll(".square");
-  const square = Array.from(squareNodeList).filter(
-    (el) => !el.classList.contains("empty")
-  );
-  if (direction === "up") {
-    square.forEach((square) => {
-      const row = parseInt(square.dataset.row);
-      const col = parseInt(square.dataset.col);
+  let moved = false;
 
-      if (row > 0 && board[row - 1][col] === 0) {
-        console.log("move up");
-        board[row][col] = 0;
-        board[row - 1][col] = square.innerHTML;
-        drawBoard();
+  if (direction === "up") {
+    for (let col = 0; col < 4; col++) {
+      for (let row = 1; row < 4; row++) {
+        if (board[row][col] !== 0) {
+          let currentRow = row;
+          while (currentRow > 0 && board[currentRow - 1][col] === 0) {
+            board[currentRow - 1][col] = board[currentRow][col];
+            board[currentRow][col] = 0;
+            currentRow--;
+            moved = true;
+          }
+        }
       }
-    });
+    }
+  }
+
+  if (direction === "down") {
+    for (let col = 0; col < 4; col++) {
+      for (let row = 2; row >= 0; row--) {
+        if (board[row][col] !== 0) {
+          let currentRow = row;
+          while (currentRow < 3 && board[currentRow + 1][col] === 0) {
+            board[currentRow + 1][col] = board[currentRow][col];
+            board[currentRow][col] = 0;
+            currentRow++;
+            moved = true;
+          }
+        }
+      }
+    }
+  }
+
+  if (direction === "left") {
+    for (let row = 0; row < 4; row++) {
+      for (let col = 1; col < 4; col++) {
+        if (board[row][col] !== 0) {
+          let currentCol = col;
+          while (currentCol > 0 && board[row][currentCol - 1] === 0) {
+            board[row][currentCol - 1] = board[row][currentCol];
+            board[row][currentCol] = 0;
+            currentCol--;
+            moved = true;
+          }
+        }
+      }
+    }
+  }
+
+  if (direction === "right") {
+    for (let row = 0; row < 4; row++) {
+      for (let col = 2; col >= 0; col--) {
+        if (board[row][col] !== 0) {
+          let currentCol = col;
+          while (currentCol < 3 && board[row][currentCol + 1] === 0) {
+            board[row][currentCol + 1] = board[row][currentCol];
+            board[row][currentCol] = 0;
+            currentCol++;
+            moved = true;
+          }
+        }
+      }
+    }
+  }
+
+  if (moved) {
+    drawBoard();
   }
 }
 
@@ -76,12 +128,12 @@ addEventListener("keyup", (event) => {
     compress("up");
   }
   if (event.key === "a" || event.key === "ArrowLeft") {
-    console.log("left");
+    compress("left");
   }
   if (event.key === "s" || event.key === "ArrowDown") {
-    console.log("down");
+    compress("down");
   }
   if (event.key === "d" || event.key === "ArrowRight") {
-    console.log("right");
+    compress("right");
   }
 });
