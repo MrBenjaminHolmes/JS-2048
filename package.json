@@ -1,0 +1,21 @@
+{
+  "name": "js-2048",
+  "version": "1.0.0",
+  "description": "REMEMBER TO CREATE A PACKAGE.JSON WITH ```npm init -y``` to make the files then run ```npm install --save-dev webpack webpack-cli```\r  ```npm install --save-dev html-webpack-plugin style-loader css-loader html-loader ```",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^7.1.2",
+    "html-loader": "^5.1.0",
+    "html-webpack-plugin": "^5.6.3",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.100.1",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2"
+  }
+}

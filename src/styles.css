@@ -1,3 +1,19 @@
-*{
-    background-color: teal;
+* {
+  background-color: rgb(240, 240, 232);
+}
+
+#gameboard {
+  width: 60vh;
+  height: 60vh;
+  background-color: rgb(204, 190, 161);
+  border-radius: 4%;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.square {
+  width: 15vh;
+  height: 15vh;
+  background-color: antiquewhite;
 }
