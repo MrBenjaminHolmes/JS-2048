@@ -1,7 +1,7 @@
 {
   "name": "js-2048",
   "version": "1.0.0",
-  "description": "REMEMBER TO CREATE A PACKAGE.JSON WITH ```npm init -y``` to make the files then run ```npm install --save-dev webpack webpack-cli```\r  ```npm install --save-dev html-webpack-plugin style-loader css-loader html-loader ```",
+  "description": "The game 2048",
   "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

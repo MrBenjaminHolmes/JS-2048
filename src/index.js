@@ -1,6 +1,7 @@
 import "./styles.css";
 
 const boardElement = document.getElementById("gameboard");
+
 const board = [
   [0, 0, 0, 0],
   [0, 0, 0, 0],
@@ -8,7 +9,7 @@ const board = [
   [0, 0, 0, 0],
 ];
 
-function createBoard() {
+function drawBoard() {
   boardElement.innerHTML = "";
   board.forEach((row, rowIndex) => {
     row.forEach((cellValue, colIndex) => {
@@ -40,10 +41,47 @@ function randomPlacement(start) {
   }
 
   randomElement.textContent = value;
+  const row = parseInt(randomElement.dataset.row);
+  const col = parseInt(randomElement.dataset.col);
+  board[row][col] = value;
   randomElement.classList.remove("empty");
 }
 
-createBoard();
+function compress(direction) {
+  const squareNodeList = document.querySelectorAll(".square");
+  const square = Array.from(squareNodeList).filter(
+    (el) => !el.classList.contains("empty")
+  );
+  if (direction === "up") {
+    square.forEach((square) => {
+      const row = parseInt(square.dataset.row);
+      const col = parseInt(square.dataset.col);
+
+      if (row > 0 && board[row - 1][col] === 0) {
+        console.log("move up");
+        board[row][col] = 0;
+        board[row - 1][col] = square.innerHTML;
+        drawBoard();
+      }
+    });
+  }
+}
+
+drawBoard();
 randomPlacement(true);
 randomPlacement(true);
-randomPlacement();
+
+addEventListener("keyup", (event) => {
+  if (event.key === "w" || event.key == "ArrowUp") {
+    compress("up");
+  }
+  if (event.key === "a" || event.key === "ArrowLeft") {
+    console.log("left");
+  }
+  if (event.key === "s" || event.key === "ArrowDown") {
+    console.log("down");
+  }
+  if (event.key === "d" || event.key === "ArrowRight") {
+    console.log("right");
+  }
+});
