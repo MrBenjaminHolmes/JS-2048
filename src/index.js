@@ -1,13 +1,29 @@
 import "./styles.css";
 
 const boardElement = document.getElementById("gameboard");
-
-const board = [
+const newGameBttn = document.getElementById("newGame");
+const highscoreElement = document.getElementById("highscore");
+let highscore = 0;
+let board = [
   [0, 0, 0, 0],
   [0, 0, 0, 0],
   [0, 0, 0, 0],
   [0, 0, 0, 0],
 ];
+
+function newGame() {
+  board = [
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+  ];
+  drawBoard();
+  randomPlacement(true);
+  randomPlacement(true);
+  drawBoard();
+  drawBoard();
+}
 
 function drawBoard() {
   boardElement.innerHTML = "";
@@ -26,6 +42,7 @@ function drawBoard() {
       boardElement.append(square);
     });
   });
+  highscoreElement.textContent = "Highscore: " + highscore;
 }
 
 function randomPlacement(start) {
@@ -122,6 +139,9 @@ function merge(direction) {
       for (let row = 0; row < 3; row++) {
         if (board[row][col] !== 0 && board[row][col] === board[row + 1][col]) {
           board[row][col] *= 2;
+          if (board[row][col] > highscore) {
+            highscore = board[row][col];
+          }
           board[row + 1][col] = 0;
         }
       }
@@ -133,6 +153,9 @@ function merge(direction) {
       for (let row = 3; row > 0; row--) {
         if (board[row][col] !== 0 && board[row][col] === board[row - 1][col]) {
           board[row][col] *= 2;
+          if (board[row][col] > highscore) {
+            highscore = board[row][col];
+          }
           board[row - 1][col] = 0;
         }
       }
@@ -144,6 +167,9 @@ function merge(direction) {
       for (let col = 0; col < 3; col++) {
         if (board[row][col] !== 0 && board[row][col] === board[row][col + 1]) {
           board[row][col] *= 2;
+          if (board[row][col] > highscore) {
+            highscore = board[row][col];
+          }
           board[row][col + 1] = 0;
         }
       }
@@ -155,6 +181,9 @@ function merge(direction) {
       for (let col = 3; col > 0; col--) {
         if (board[row][col] !== 0 && board[row][col] === board[row][col - 1]) {
           board[row][col] *= 2;
+          if (board[row][col] > highscore) {
+            highscore = board[row][col];
+          }
           board[row][col - 1] = 0;
         }
       }
@@ -163,10 +192,11 @@ function merge(direction) {
 
   drawBoard();
 }
-drawBoard();
-randomPlacement(true);
-randomPlacement(true);
-drawBoard();
+
+//Initiate New Game
+newGame();
+
+//Add Event Listeners to Keys
 addEventListener("keyup", (event) => {
   if (event.key === "w" || event.key == "ArrowUp") {
     compress("up");
@@ -192,4 +222,8 @@ addEventListener("keyup", (event) => {
     compress("right");
     randomPlacement();
   }
+});
+
+newGameBttn.addEventListener("click", (event) => {
+  newGame();
 });
