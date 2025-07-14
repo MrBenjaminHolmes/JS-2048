@@ -4,6 +4,9 @@ const boardElement = document.getElementById("gameboard");
 const newGameBttn = document.getElementById("newGame");
 const highscoreElement = document.getElementById("highscore");
 let highscore = 0;
+let compressed = false;
+let compressed2 = false;
+let merged = false;
 let board = [
   [0, 0, 0, 0],
   [0, 0, 0, 0],
@@ -39,6 +42,7 @@ function drawBoard() {
       } else {
         square.classList.add(`value-${cellValue}`);
       }
+
       boardElement.append(square);
     });
   });
@@ -131,9 +135,11 @@ function compress(direction) {
   if (moved) {
     drawBoard();
   }
+  return moved;
 }
 
 function merge(direction) {
+  let merged = false;
   if (direction === "up") {
     for (let col = 0; col < 4; col++) {
       for (let row = 0; row < 3; row++) {
@@ -143,6 +149,7 @@ function merge(direction) {
             highscore = board[row][col];
           }
           board[row + 1][col] = 0;
+          merged = true;
         }
       }
     }
@@ -157,6 +164,7 @@ function merge(direction) {
             highscore = board[row][col];
           }
           board[row - 1][col] = 0;
+          merged = true;
         }
       }
     }
@@ -171,6 +179,7 @@ function merge(direction) {
             highscore = board[row][col];
           }
           board[row][col + 1] = 0;
+          merged = true;
         }
       }
     }
@@ -185,6 +194,7 @@ function merge(direction) {
             highscore = board[row][col];
           }
           board[row][col - 1] = 0;
+          merged = true;
         }
       }
     }
@@ -199,31 +209,81 @@ newGame();
 //Add Event Listeners to Keys
 addEventListener("keyup", (event) => {
   if (event.key === "w" || event.key == "ArrowUp") {
-    compress("up");
-    merge("up");
-    compress("up");
-    randomPlacement();
+    compressed = compress("up");
+    merged = merge("up");
+    compressed2 = compress("up");
+    if (compressed || merged || compressed2) {
+      randomPlacement();
+    }
+    if (checkLoss()) {
+      console.log("Game Over");
+    }
   }
   if (event.key === "a" || event.key === "ArrowLeft") {
-    compress("left");
-    merge("left");
-    compress("left");
-    randomPlacement();
+    compressed = compress("left");
+    merged = merge("left");
+    compressed2 = compress("left");
+    if (compressed || merged || compressed2) {
+      randomPlacement();
+    }
+    if (checkLoss()) {
+      console.log("Game Over");
+      newGame();
+    }
   }
   if (event.key === "s" || event.key === "ArrowDown") {
-    compress("down");
-    merge("down");
-    compress("down");
-    randomPlacement();
+    compressed = compress("down");
+    merged = merge("down");
+    compressed2 = compress("down");
+    if (compressed || merged || compressed2) {
+      randomPlacement();
+    }
+    if (checkLoss()) {
+      console.log("Game Over");
+      newGame();
+    }
   }
   if (event.key === "d" || event.key === "ArrowRight") {
-    compress("right");
-    merge("right");
-    compress("right");
-    randomPlacement();
+    compressed = compress("right");
+    merged = merge("right");
+    compressed2 = compress("right");
+    if (compressed || merged || compressed2) {
+      randomPlacement();
+    }
+    if (checkLoss()) {
+      console.log("Game Over");
+      newGame();
+    }
   }
 });
 
 newGameBttn.addEventListener("click", (event) => {
   newGame();
 });
+
+function checkLoss() {
+  for (let r = 0; r < 4; r++) {
+    for (let c = 0; c < 4; c++) {
+      if (board[r][c] === 0) {
+        return false;
+      }
+    }
+  }
+
+  for (let r = 0; r < 4; r++) {
+    for (let c = 0; c < 3; c++) {
+      if (board[r][c] === board[r][c + 1]) {
+        return false;
+      }
+    }
+  }
+
+  for (let c = 0; c < 4; c++) {
+    for (let r = 0; r < 3; r++) {
+      if (board[r][c] === board[r + 1][c]) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
