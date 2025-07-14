@@ -14,6 +14,24 @@ let board = [
   [0, 0, 0, 0],
 ];
 
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == " ") {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+highscore = getCookie("highscore");
+
 function newGame() {
   board = [
     [0, 0, 0, 0],
@@ -147,6 +165,7 @@ function merge(direction) {
           board[row][col] *= 2;
           if (board[row][col] > highscore) {
             highscore = board[row][col];
+            document.cookie = `highscore=${highscore};`;
           }
           board[row + 1][col] = 0;
           merged = true;
@@ -162,6 +181,7 @@ function merge(direction) {
           board[row][col] *= 2;
           if (board[row][col] > highscore) {
             highscore = board[row][col];
+            document.cookie = `highscore=${highscore};`;
           }
           board[row - 1][col] = 0;
           merged = true;
@@ -177,6 +197,7 @@ function merge(direction) {
           board[row][col] *= 2;
           if (board[row][col] > highscore) {
             highscore = board[row][col];
+            document.cookie = `highscore=${highscore};`;
           }
           board[row][col + 1] = 0;
           merged = true;
@@ -192,6 +213,7 @@ function merge(direction) {
           board[row][col] *= 2;
           if (board[row][col] > highscore) {
             highscore = board[row][col];
+            document.cookie = `highscore=${highscore};`;
           }
           board[row][col - 1] = 0;
           merged = true;
